@@ -19,7 +19,7 @@ steps:
 #     provProfileSecureFile: '6ffac825-ed27-47d0-8134-95fcf37a666c.mobileprovision'
 - task: Xcode@5
   inputs:
-    scheme: '$(scheme)'
+    scheme: 'iOSHelloWorld'
     sdk: 'iphoneos'
     configuration: 'Release'
     xcodeVersion: 'default' # Options: 8, 9, default, specifyPath
