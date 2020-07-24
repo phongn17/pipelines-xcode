@@ -4,12 +4,24 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xcode
 
 pool:
-  vmImage: 'macOS 10.13'
+  vmImage: 'macOS-10.14'
 
+# An Xcode app must be signed and provisioned to run on a device or be published to the App Store.
+# The signing and provisioning process needs access to your P12 signing certificate and one or more provisioning profiles.
+# The Install Apple Certificate and Install Apple Provisioning Profile tasks make these available to Xcode during a build.
 steps:
+- task: InstallAppleCertificate@2
+  inputs:
+    certSecureFile: 'chrisid_iOSDev_Nov2018.p12'
+    certPwd: $(P12Password)
+- task: InstallAppleProvisioningProfile@1
+  inputs:
+    provProfileSecureFile: '6ffac825-ed27-47d0-8134-95fcf37a666c.mobileprovision'
 - task: Xcode@5
   inputs:
-    scheme: ''
+    scheme: '$(scheme)'
     sdk: 'iphoneos'
     configuration: 'Release'
     xcodeVersion: 'default' # Options: 8, 9, default, specifyPath
+    exportPath: '$(agent.buildDirectory)/output/$(sdk)/$(configuration)'
+    packageApp: false
